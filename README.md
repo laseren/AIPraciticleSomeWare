@@ -1,0 +1,2 @@
+# AIPraciticleSomeWare
+青岛科技大学物联网专业机器学习人工智能方向的实践平台
