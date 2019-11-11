@@ -1,0 +1,138 @@
+
+#（1）普通函数法
+#import sys
+#请同学们认真对着理论课上的公式推导来理解编程方法。 普通函数法：
+#Training data set
+data1 = [(0.000000,3,95.364693) ,
+        (1.000000,3,97.217205) ,
+        (2.000000,2,75.195834),
+        (3.000000,4,60.105519) ,
+        (4.000000,5,49.342380),
+        (5.000000,3,37.400286),
+        (6.000000,2,51.057128),
+        (7.000000,4,25.500619),
+        (8.000000,2,5.259608)]
+
+ 
+# data2 = [(2104.,400.),
+#          (1600.,330.),
+#          (2400.,369.),
+#          (1416.,232.),
+#          (3000.,540.)]
+ 
+# def lineareqation(theta2,theta1,theta0): #准备拟合的那个函数
+#     return lambda x,y :theta2*y + theta1*x + theta0
+# #匿名函数使用是一件很让人头痛的事情，可读性很差。没有特殊需要不要使用匿名函数。
+#其实知道了lambda函数绝大多数时间表现，等效为一个函数，就可以重写上面的函数了。
+def lineareqation(theta2,theta1,theta0,x,y): #准备拟合的那个函数
+    
+    return theta2*y + theta1*x + theta0
+def linear_regression(data, learning_rate=0.001, variance=0.00001):
+    """ Takes a set of data points in the form: [(1,1), (2,2), ...] and outputs (slope, y0). """
+    #梯度下降算法，其中的循环跟预想的不一样。另外一个这个程序中有几个问题，需要更加清晰，就是推导过程中，出现了求和后取平均，这个
+    #问题，我认为是理论上数学推导过程中，没有解释清楚的，或者说就是数学上的一个疏漏。
+    
+    #init the parameters to zero
+    theta0_guess = 1.
+    theta1_guess = 1.
+    theta2_guess = 1.
+ 
+ 
+    theta0_last = 100.
+    theta1_last = 100.
+    theta2_last = 100.
+     
+    m = len(data)
+ 
+    while (abs(theta2_guess-theta2_last) > variance or abs(theta1_guess-theta1_last) > variance or abs(theta0_guess - theta0_last) > variance):
+        #我觉得用while循环，比for循环更适合达到条件就退出的目的。
+        theta2_last = theta2_guess
+        theta1_last = theta1_guess
+        theta0_last = theta0_guess
+        
+ 
+        #lineareqation2 = lineareqation(theta2_guess,theta1_guess,theta0_guess)#让预想的函数，lambda定义的匿名函数，代入参数
+        #请从这里体会一下匿名函数的好处。
+ 
+        theta0_guess = theta0_guess - learning_rate * (1./m) * sum([lineareqation(theta2_guess,theta1_guess,theta0_guess,point[0],point[1]) - point[2] for point in data])
+        #就是这里的求和方法，简单有效，值得学习。这个才是对应公式后写出来的。
+        theta1_guess = theta1_guess - learning_rate * (1./m) * sum([ (lineareqation(theta2_guess,theta1_guess,theta0_guess,point[0],point[1]) - point[2]) * point[0] for point in data])   
+        theta2_guess = theta2_guess - learning_rate * (1./m) * sum([ (lineareqation(theta2_guess,theta1_guess,theta0_guess,point[0],point[1]) - point[2]) * point[1] for point in data])
+        #匿名函数，让传参可以变为逐步进行，所以看起来简介明快。但使用函数可读性更强。
+    return ( theta0_guess,theta1_guess,theta2_guess )
+ 
+ 
+ 
+points = [(float(x),float(y),float(z)) for (x,y,z) in data1]
+#print(points)
+res = linear_regression(points)
+
+print(res)
+
+
+#（2）匿名函数法
+
+#import sys
+#请同学们认真对着理论课上的公式推导来理解编程方法。 
+#Training data set
+data1 = [(0.000000,3,95.364693) ,
+        (1.000000,3,97.217205) ,
+        (2.000000,2,75.195834),
+        (3.000000,4,60.105519) ,
+        (4.000000,5,49.342380),
+        (5.000000,3,37.400286),
+        (6.000000,2,51.057128),
+        (7.000000,4,25.500619),
+        (8.000000,2,5.259608)]
+
+ 
+# data2 = [(2104.,400.),
+#          (1600.,330.),
+#          (2400.,369.),
+#          (1416.,232.),
+#          (3000.,540.)]
+ 
+def lineareqation(theta2,theta1,theta0): #准备拟合的那个函数
+    return lambda x,y :theta2*y + theta1*x + theta0
+#匿名函数使用是一件很让人头痛的事情，可读性很差。没有特殊需要不要使用匿名函数。
+
+def linear_regression(data, learning_rate=0.001, variance=0.00001):
+    """ Takes a set of data points in the form: [(1,1), (2,2), ...] and outputs (slope, y0). """
+    #梯度下降算法，其中的循环跟预想的不一样。另外一个这个程序中有几个问题，需要更加清晰，就是推导过程中，出现了求和后取平均，这个
+    #问题，我认为是理论上数学推导过程中，没有解释清楚的，或者说就是数学上的一个疏漏。
+    
+    #init the parameters to zero
+    theta0_guess = 1.
+    theta1_guess = 1.
+    theta2_guess = 1.
+ 
+ 
+    theta0_last = 100.
+    theta1_last = 100.
+    theta2_last = 100.
+     
+    m = len(data)
+ 
+    while (abs(theta2_guess-theta2_last) > variance or abs(theta1_guess-theta1_last) > variance or abs(theta0_guess - theta0_last) > variance):
+        #我觉得用while循环，比for循环更适合达到条件就退出的目的。
+        theta2_last = theta2_guess
+        theta1_last = theta1_guess
+        theta0_last = theta0_guess
+        
+ 
+        lineareqation2 = lineareqation(theta2_guess,theta1_guess,theta0_guess)#让预想的函数，lambda定义的匿名函数，代入参数
+    
+ 
+        theta0_guess = theta0_guess - learning_rate * (1./m) * sum([lineareqation2(point[0],point[1]) - point[2] for point in data])
+        #就是这里的求和方法，简单有效，值得学习。这个才是对应公式后写出来的。
+        theta1_guess = theta1_guess - learning_rate * (1./m) * sum([ (lineareqation2(point[0],point[1]) - point[2]) * point[0] for point in data])   
+        theta2_guess = theta2_guess - learning_rate * (1./m) * sum([ (lineareqation2(point[0],point[1]) - point[2]) * point[1] for point in data])
+    return ( theta0_guess,theta1_guess,theta2_guess )
+ 
+ 
+ 
+points = [(float(x),float(y),float(z)) for (x,y,z) in data1]
+#print(points)
+res = linear_regression(points)
+
+print(res)

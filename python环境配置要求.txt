@@ -1,0 +1,24 @@
+实验环境要求满足科学计算为主要目的，python应用程序开发也涉及部分。
+
+要求每人独立一个python开发环境，最好是用自己的笔记本电脑。实在不具备的，请联系实验室管理员
+安装。
+
+python版本 3.0以上
+
+内部的模块，请安装：
+
+numpy
+
+matplotlib
+
+scipy
+
+sympy
+
+pandas
+
+jupyter notebook
+
+请安装pycharm 2017，以上的专业版 破解或者学生定制版。不要社区版。
+
+
